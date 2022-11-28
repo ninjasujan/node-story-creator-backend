@@ -2,7 +2,7 @@ const { S3Client } = require("@aws-sdk/client-s3");
 const Locals = require("./Locals");
 
 class S3 {
-    static {
+    constructor() {
         this.client = new S3Client({
             region: "us-east-1",
             credentials: {
@@ -13,4 +13,4 @@ class S3 {
     }
 }
 
-module.exports = S3;
+module.exports = new S3();

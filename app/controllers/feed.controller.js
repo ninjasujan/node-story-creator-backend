@@ -9,7 +9,6 @@ const {
     ValidPostType,
     S3_BUCKET_PREFIX,
 } = require("../../constants/feed.constant");
-const Locals = require("../../configs/Locals");
 
 class Feed {
     /** Create user story
@@ -40,12 +39,12 @@ class Feed {
                 `${S3_BUCKET_PREFIX}/${userId}/${originalname}`.toString();
 
             /** Upload object to s3 */
-            // await feedService.uploadObjectToStorage(
-            //     buffer,
-            //     `${userId}/originalname`,
-            //     mimetype,
-            //     size
-            // );
+            await feedService.uploadObjectToStorage(
+                buffer,
+                `${userId}/originalname`,
+                mimetype,
+                size
+            );
 
             let story;
             /** Post Type is POST create POST */
@@ -82,6 +81,7 @@ class Feed {
         }
     };
 
+    /** Ftech all post from user */
     fetchUserPost = async (request, response, next) => {
         try {
             const userId = request.auth._id;
@@ -110,6 +110,7 @@ class Feed {
         }
     };
 
+    /** Fetcg post by title */
     fetchPostByTitle = async (request, response, next) => {
         try {
             const { title } = request.params;
@@ -133,6 +134,7 @@ class Feed {
         }
     };
 
+    /** Filter Post */
     filterPost = async (request, response, next) => {
         try {
             const errors = validationResult(request);
@@ -195,6 +197,7 @@ class Feed {
         }
     };
 
+    /** Delete Post */
     deletePost = async (request, response, next) => {
         try {
             const { _id, userName } = request.auth;
@@ -224,6 +227,7 @@ class Feed {
         }
     };
 
+    /** Update Post */
     updatePost = async (request, response, next) => {
         try {
             const errors = validationResult(request);
