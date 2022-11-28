@@ -1,3 +1,5 @@
+const Locals = require("../configs/Locals");
+
 const ATTACHMENT_MAX_SIZE = 3000000;
 
 const ValidFileType = {
@@ -11,7 +13,7 @@ const ValidPostType = {
     HASHTAG: "HASHTAG",
 };
 
-const S3_BUCKET_PREFIX = "https://${Locals.AWS_BUCKET_NAME}.s3.amazonaws.com";
+const S3_BUCKET_PREFIX = `https://${Locals.AWS_BUCKET_NAME}.s3.amazonaws.com`;
 
 module.exports = {
     ATTACHMENT_MAX_SIZE,
