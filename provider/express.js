@@ -1,6 +1,8 @@
 const express = require("express");
 const Locals = require("../configs/Locals");
-const appRoute = require("../app/routes/app.route");
+const middleware = require("../app/middleware/http.middleware");
+const apiRoutes = require("../app/routes/index");
+const ErrorHandler = require("../exception/Hander");
 
 class Express {
     init = () => {
@@ -15,21 +17,24 @@ class Express {
     };
 
     mountRoute = () => {
-        this.app.use(express.json());
-        this.app.use(express.urlencoded({ extended: true }));
-        this.app.use("/api", appRoute.router);
+        /** Mount all http middleware */
+        middleware.mountMiddleware(this.app);
+
+        /** Route level API */
+        this.app.use("/api", apiRoutes.router);
+
+        /** Not found 404 error */
         this.app.use(this.notFound);
-        this.app.use(this.errorHandler);
+
+        /** Global error handler to catch and handle all error */
+        this.app.use(ErrorHandler.handler);
     };
 
     notFound = (req, res, next) => {
-        res.status(404).json({ message: "Route not found.!" });
-    };
-
-    errorHandler = (err, req, res, next) => {
-        console.log("[Error in API]", err);
-        const message = err.message;
-        res.status(400).json({ message });
+        res.status(404).json({
+            status: "NotFound",
+            message: "Route not found.!",
+        });
     };
 }
 

@@ -1,5 +1,5 @@
-const express = require("./provider/express");
-const MongoDB = require("./provider/mongodb");
+const express = require("./provider/Express");
+const MongoDB = require("./provider/Mongodb");
 
 class App {
     static init = () => {

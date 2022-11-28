@@ -6,10 +6,15 @@ const postSchema = new mongoose.Schema(
             type: String,
             required: true,
             index: true,
+            unique: true,
+            minLength: 3,
+            maxLength: 20,
         },
         description: {
             type: String,
             required: true,
+            minLength: 10,
+            maxLength: 3000,
         },
         url: {
             type: String,
