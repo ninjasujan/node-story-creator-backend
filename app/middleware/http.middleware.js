@@ -1,14 +1,16 @@
 const express = require("express");
-const Locals = require("../../configs/Locals");
+const morgan = require("morgan");
 const { expressjwt } = require("express-jwt");
+const Locals = require("../../configs/Locals");
 
 class Middleware {
     mountMiddleware = (_express) => {
         /** App level middleware */
         _express.use(express.urlencoded({ extended: true }));
         _express.use(express.json());
+        _express.use(morgan("dev"));
 
-        /** Auth token validator */
+        /** Auth token validator - to validate all request */
         _express.use(
             expressjwt({
                 secret: Locals.EXPRESS_JWT_SECRET,

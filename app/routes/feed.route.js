@@ -20,7 +20,9 @@ class Feed {
                 body("description", FeedError.descriptionErrorMessage)
                     .isString()
                     .isLength({ min: 10, max: 1000 }),
-                body("tags", FeedError.tagsErrorMessage).isArray().optional(),
+                body("hashTag", FeedError.tagsErrorMessage)
+                    .isArray()
+                    .optional(),
                 body("postType", FeedError.postTypeErrorMessage).isIn(
                     Object.values(ValidPostType)
                 ),
@@ -28,11 +30,39 @@ class Feed {
             feedController.createStory
         );
 
+        /** fetch  post by title - toute */
+        this.router.get("/fetch-story/:title", feedController.fetchPostByTitle);
+
         /** fetch all user post - DESC order route */
         this.router.get("/fetch-story", feedController.fetchUserPost);
 
-        /** fetch  post by title - toute */
-        this.router.get("/fetch-story", feedController.fetchUserPost);
+        /** Search post based on filters */
+        this.router.post(
+            "/search-story",
+            [
+                body("title", FeedError.titleErrorMessage)
+                    .isString()
+                    .optional(),
+                body("hashTag", FeedError.tagsErrorMessage)
+                    .isArray()
+                    .optional(),
+                body("userId", "Provide valid user _id")
+                    .isString()
+                    .isLength({ min: 24, max: 24 })
+                    .optional(),
+            ],
+            feedController.filterPost
+        );
+
+        /** Delete Story */
+        this.router.delete("/delete-story/:storyId", feedController.deletePost);
+
+        /** update Story */
+        this.router.put(
+            "/update-story/:storyId",
+            parser.formDataParser(),
+            feedController.updatePost
+        );
     }
 }
 
